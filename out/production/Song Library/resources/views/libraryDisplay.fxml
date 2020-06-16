@@ -5,15 +5,15 @@
 
 <AnchorPane minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jFiles.Controllers.libraryController">
    <children>
-      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0">
+      <SplitPane fx:id="wholeWindow" dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane fx:id="songSideBar" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label prefHeight="50.0" prefWidth="175.0" text="                 Song List" />
-                  <ListView layoutY="50.0" prefHeight="300.0" prefWidth="175.0" />
-                  <Button layoutX="14.0" layoutY="359.0" mnemonicParsing="false" text="Add" />
-                  <Button layoutX="69.0" layoutY="359.0" mnemonicParsing="false" text="Edit" />
-                  <Button layoutX="117.0" layoutY="359.0" mnemonicParsing="false" text="Delete" />
+                  <ListView fx:id="song_list" layoutY="50.0" prefHeight="300.0" prefWidth="175.0" />
+                  <Button fx:id="add_button" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onMouseClicked="#add_song" text="Add" />
+                  <Button fx:id="edit_button" layoutX="69.0" layoutY="359.0" mnemonicParsing="false" onMouseClicked="#edit_song" text="Edit" />
+                  <Button fx:id="delete_button" layoutX="117.0" layoutY="359.0" mnemonicParsing="false" onMouseClicked="#delete_song" text="Delete" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
