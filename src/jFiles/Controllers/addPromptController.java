@@ -39,8 +39,7 @@ public class addPromptController {
 
         String track = songName + " - " + artistName;
 
-        if (!songName.equals("") && !artistName.equals("") && (!library.listed_tracks.contains(track))) {
-           // library.song_list.getItems().add(track);
+        if (!songName.equals("") && !artistName.equals("") && (!library.getList().contains(track))) {
             data.write(track, albumName, songYear);
 
             Parent libraryRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("resources/views/libraryDisplay.fxml")));
@@ -49,6 +48,8 @@ public class addPromptController {
             Stage libraryWindow = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             libraryWindow.setScene(library);
             libraryWindow.show();
+        } else {
+            System.out.println("Song already exists");
         }
 
     }

@@ -83,6 +83,10 @@ public class libraryController {
                  }
             }
         }
+    public ArrayList<String>  getList() throws FileNotFoundException {
+        scanFile();
+        return listed_tracks;
+    }
 
     @FXML
     public void initialize() throws FileNotFoundException {
