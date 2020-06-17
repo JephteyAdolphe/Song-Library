@@ -37,12 +37,16 @@ public class addPromptController {
         String albumName = album_name.getText();
         String songYear = song_year.getText();
 
-        String track = songName + " - " + artistName;
+        String track = songName + " - " + artistName;   // Maybe use hashmap to hold album and year for each song (in library controller)
 
         // Use regex so user must enter characters and not just all whitespace
 
         if (!songName.equals("") && !artistName.equals("") && (!library.getList().contains(track))) {
-            data.write(track, albumName, songYear);
+            data.write(track);
+            if (albumName.equals("")) albumName = " ";
+            if (songYear.equals("")) songYear = " ";
+
+            data.writeToDetails(track, albumName, songYear);
 
             Parent libraryRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("resources/views/libraryDisplay.fxml")));
             Scene library = new Scene(libraryRoot);
