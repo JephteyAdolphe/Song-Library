@@ -39,6 +39,8 @@ public class addPromptController {
 
         String track = songName + " - " + artistName;
 
+        // Use regex so user must enter characters and not just all whitespace
+
         if (!songName.equals("") && !artistName.equals("") && (!library.getList().contains(track))) {
             data.write(track, albumName, songYear);
 

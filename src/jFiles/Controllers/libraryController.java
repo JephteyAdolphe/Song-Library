@@ -25,10 +25,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class libraryController {
 
@@ -74,7 +71,6 @@ public class libraryController {
         Scanner scan = new Scanner(file);
         song_list.setItems(observable_track_list);
 
-
         while (scan.hasNextLine()) {
             String song = scan.nextLine();
             if (!listed_tracks.contains(song)) {
@@ -82,7 +78,10 @@ public class libraryController {
                 listed_tracks.add(song);
                  }
             }
+        
+        Collections.sort(observable_track_list);
         }
+
     public ArrayList<String>  getList() throws FileNotFoundException {
         scanFile();
         return listed_tracks;
