@@ -4,13 +4,13 @@ import java.io.*;
 import java.util.Scanner;
 
 public class songData {
+
     private File file = new File("src/resources/data/songData.txt");
     private File detailsFile = new File("src/resources/data/songDetails.txt");
 
     public void write(String track) throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter(this.file, true));
 
-      //  pw.println(track + " " + album + " " + year);
         pw.println(track);
         pw.close();
     }
@@ -23,7 +23,7 @@ public class songData {
     }
 
 
-    public void clear() throws FileNotFoundException {
+    private void clear() throws FileNotFoundException {
         PrintWriter writer = new PrintWriter(this.file);
         PrintWriter writerSong = new PrintWriter("src/resources/data/songData.txt");
 

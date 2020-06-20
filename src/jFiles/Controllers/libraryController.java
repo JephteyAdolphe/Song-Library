@@ -6,8 +6,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import resources.data.songData;
 import javafx.collections.FXCollections;
@@ -26,10 +30,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class libraryController {
-
+public class libraryController implements Initializable {
 
     public Button add_button;
     public Button edit_button;
@@ -43,15 +49,16 @@ public class libraryController {
     public ListView<String> song_list = new ListView<>();
 
     private ArrayList<String> listed_tracks = new ArrayList<>();
-    private HashMap full_details = new HashMap();
 
     public Label song_label;
     public Label artist_label;
     public Label album_label;
     public Label year_label;
-    //private songData data = new songData();
+
     private File file = new File("src/resources/data/songData.txt");
     private File detailsFile = new File("src/resources/data/songDetails.txt");
+
+    // Takes user to the "add a song" prompt
 
     public void add_song(MouseEvent mouseEvent) throws IOException {
 
@@ -63,12 +70,42 @@ public class libraryController {
         add_song_prompt.show();
     }
 
-    public void edit_song(MouseEvent mouseEvent) throws FileNotFoundException {
-        //song_list.getItems().add("Edit Pressed");
+    // Takes user to the "edit song" prompt
+
+    public void edit_song(MouseEvent mouseEvent) throws IOException {
+        String selected_track = song_list.getSelectionModel().getSelectedItem();
+
+        /*Parent editRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("resources/views/edit_prompt.fxml")));
+        Scene edit_song = new Scene(editRoot);
+
+        Stage edit_song_prompt = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+
+        edit_song_prompt.setScene(edit_song);
+        edit_song_prompt.show();*/
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/views/edit_prompt.fxml"));
+
+            Parent editRoot = (Parent) loader.load();
+            Scene edit_song = new Scene(editRoot);
+            editPromptController editor = loader.getController();
+            editor.selectedTrack(selected_track);
+
+            Stage edit_song_prompt = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            edit_song_prompt.setScene(edit_song);
+            edit_song_prompt.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void delete_song(MouseEvent mouseEvent) {
+    @FXML
+    public void delete_song(MouseEvent mouseEvent) throws IOException {
     }
+
+    // Scans through the text file (mock database) containing the listed tracks
 
     private void scanFile() throws FileNotFoundException {
         Scanner scan = new Scanner(file);
@@ -85,7 +122,9 @@ public class libraryController {
         Collections.sort(observable_track_list);
         }
 
-    private String[] getDetails(String selected) throws FileNotFoundException {
+    // Scans through, parses, and returns the full details of the selected track
+
+    String[] getDetails(String selected) throws FileNotFoundException {
         Scanner scan = new Scanner(detailsFile);
         String[] details = new String[4];
 
@@ -100,17 +139,27 @@ public class libraryController {
         return details;
     }
 
+    // Returns the existing tracks
+
     public ArrayList<String>  getList() throws FileNotFoundException {
         scanFile();
         return listed_tracks;
     }
 
-    @FXML
-    public void initialize() throws FileNotFoundException {
-        scanFile();
-        song_list.getSelectionModel().select(0);
-        fill_in_details();
+    // Loads the existing tracks
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        try {
+            scanFile();
+            song_list.getSelectionModel().select(0);
+            fill_in_details();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+     }
+
+     // Loads the details of the selected song in the main display
 
     private void fill_in_details() throws FileNotFoundException {
         String[] details = getDetails(song_list.getSelectionModel().getSelectedItem());

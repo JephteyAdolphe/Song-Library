@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Main extends Application {
-    private File file = new File("src/resources/data/songData.txt");
     @FXML
     public ListView<String> song_list = new ListView<>();
 
@@ -35,17 +34,6 @@ public class Main extends Application {
         primaryStage.show();
 
     }
-
-    public void scanFile() throws FileNotFoundException {
-        Scanner scan = new Scanner(file);
-        song_list.setItems(observable_track_list);
-
-        while (scan.hasNextLine()) {
-            //song_list.getItems().add(scan.nextLine());
-            observable_track_list.add(scan.nextLine());
-        }
-    }
-
 
     public static void main(String[] args) {
         launch(args);

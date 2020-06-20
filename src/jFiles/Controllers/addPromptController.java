@@ -37,7 +37,7 @@ public class addPromptController {
         String albumName = album_name.getText();
         String songYear = song_year.getText();
 
-        String track = songName + " - " + artistName;   // Maybe use hashmap to hold album and year for each song (in library controller)
+        String track = songName + " - " + artistName;
 
         // Use regex so user must enter characters and not just all whitespace
 
