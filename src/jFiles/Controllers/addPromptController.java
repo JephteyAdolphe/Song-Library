@@ -1,7 +1,6 @@
 package jFiles.Controllers;
 
 import resources.data.songData;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -25,26 +22,24 @@ public class addPromptController {
     public TextField album_name;
     public TextField song_year;
 
-    libraryController library = new libraryController();
-    private ObservableList<String> trackList;
-    private File file = new File("src/resources/data/songData.txt");
+    private libraryController library = new libraryController();
 
     private songData data = new songData();
 
+    // Validates the details of the song to be added
+
     public void add(MouseEvent mouseEvent) throws IOException {
-        String songName = song_name.getText();
-        String artistName = artist_name.getText();
+        String songName = song_name.getText().trim();
+        String artistName = artist_name.getText().trim();
         String albumName = album_name.getText();
         String songYear = song_year.getText();
 
         String track = songName + " - " + artistName;
 
-        // Use regex so user must enter characters and not just all whitespace
-
-        if (!songName.equals("") && !artistName.equals("") && (!library.getList().contains(track))) {
+        if (songName.length() > 0 && artistName.length() > 0 && (!library.getList().contains(track))) {
             data.write(track);
-            if (albumName.equals("")) albumName = " ";
-            if (songYear.equals("")) songYear = " ";
+            if (albumName.trim().length() == 0) albumName = "n/a";
+            if (songYear.trim().length() == 0) songYear = "n/a";
 
             data.writeToDetails(track, albumName, songYear);
 
@@ -57,8 +52,9 @@ public class addPromptController {
         } else {
             System.out.println("Song already exists");
         }
-
     }
+
+    // Takes user back to the main display without adding a song
 
     public void cancel(MouseEvent mouseEvent) throws IOException {
 

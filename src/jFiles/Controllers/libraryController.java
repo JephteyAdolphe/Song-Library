@@ -27,9 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
@@ -58,6 +56,8 @@ public class libraryController implements Initializable {
     private File file = new File("src/resources/data/songData.txt");
     private File detailsFile = new File("src/resources/data/songDetails.txt");
 
+    private songData data = new songData();
+
     // Takes user to the "add a song" prompt
 
     public void add_song(MouseEvent mouseEvent) throws IOException {
@@ -74,14 +74,6 @@ public class libraryController implements Initializable {
 
     public void edit_song(MouseEvent mouseEvent) throws IOException {
         String selected_track = song_list.getSelectionModel().getSelectedItem();
-
-        /*Parent editRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("resources/views/edit_prompt.fxml")));
-        Scene edit_song = new Scene(editRoot);
-
-        Stage edit_song_prompt = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-
-        edit_song_prompt.setScene(edit_song);
-        edit_song_prompt.show();*/
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/views/edit_prompt.fxml"));
@@ -103,6 +95,30 @@ public class libraryController implements Initializable {
 
     @FXML
     public void delete_song(MouseEvent mouseEvent) throws IOException {
+
+        String[] details = data.getDetails(song_list.getSelectionModel().getSelectedItem());
+        String full_details = details[0] + " - " + details[1] + " - " + details[2] + " - " + details[3];
+
+        //deletePromptController del = new deletePromptController();
+        //del.selectedTrack(song_list.getSelectionModel().getSelectedItem(), details, full_details);
+
+        //data.delete_track(song_list.getSelectionModel().getSelectedItem(), full_details);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/views/delete_prompt.fxml"));
+
+            Parent delRoot = (Parent) loader.load();
+            Scene delete_song = new Scene(delRoot);
+            deletePromptController del = loader.getController();
+            del.selectedTrack(song_list.getSelectionModel().getSelectedItem(), details, full_details);
+
+            Stage del_song_prompt = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            del_song_prompt.setScene(delete_song);
+            del_song_prompt.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Scans through the text file (mock database) containing the listed tracks
@@ -119,25 +135,9 @@ public class libraryController implements Initializable {
                  }
             }
 
-        Collections.sort(observable_track_list);
+        Collections.sort(observable_track_list, String.CASE_INSENSITIVE_ORDER);
+        scan.close();
         }
-
-    // Scans through, parses, and returns the full details of the selected track
-
-    String[] getDetails(String selected) throws FileNotFoundException {
-        Scanner scan = new Scanner(detailsFile);
-        String[] details = new String[4];
-
-        while (scan.hasNextLine()) {
-            String song_line = scan.nextLine();
-
-            if (song_line.contains(selected)) {
-                details = song_line.split(" - ");
-            }
-        }
-
-        return details;
-    }
 
     // Returns the existing tracks
 
@@ -154,6 +154,7 @@ public class libraryController implements Initializable {
             scanFile();
             song_list.getSelectionModel().select(0);
             fill_in_details();
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -162,7 +163,7 @@ public class libraryController implements Initializable {
      // Loads the details of the selected song in the main display
 
     private void fill_in_details() throws FileNotFoundException {
-        String[] details = getDetails(song_list.getSelectionModel().getSelectedItem());
+        String[] details = data.getDetails(song_list.getSelectionModel().getSelectedItem());
 
         song_label.setText(details[0]);
         artist_label.setText(details[1]);
@@ -172,6 +173,5 @@ public class libraryController implements Initializable {
 
     public void item_selection(MouseEvent mouseEvent) throws FileNotFoundException {
         fill_in_details();
-        System.out.println(song_list.getSelectionModel().getSelectedItem());
     }
 }

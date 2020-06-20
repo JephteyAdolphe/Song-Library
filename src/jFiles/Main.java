@@ -17,11 +17,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Main extends Application {
-    @FXML
-    public ListView<String> song_list = new ListView<>();
-
-    public ObservableList<String> observable_track_list = FXCollections.observableArrayList();
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
