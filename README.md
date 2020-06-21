@@ -3,4 +3,4 @@
 
   - Designed a graphical user interface to manage a library of songs using text files as a mock database.
   
-  - The GUI the addition, editing, and deletion of a song.
+  - The GUI allows for the addition, editing, and deletion of a song.
